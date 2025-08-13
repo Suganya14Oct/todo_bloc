@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_cubit/cubits/cubits.dart';
 import 'package:todo_cubit/models/todo_model.dart';
 
-class SearchAndFilterTodo extends StatefulWidget {
-  const SearchAndFilterTodo({super.key});
+import '../utils/debounce.dart';
 
-  @override
-  State<SearchAndFilterTodo> createState() => _SearchAndFilterTodoState();
-}
+class SearchAndFilterTodo extends StatelessWidget {
+  SearchAndFilterTodo({super.key});
 
-class _SearchAndFilterTodoState extends State<SearchAndFilterTodo> {
+  final debounce = Debounce(milliSeconds: 1000);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,6 +23,7 @@ class _SearchAndFilterTodoState extends State<SearchAndFilterTodo> {
           ),
           onChanged: (String? newSearchTerm){
             if (newSearchTerm != null){
+              debounce.run((){});
               context.read<TodoSearchCubit>().setSearchTerm(newSearchTerm);
             }
           },
@@ -54,5 +54,4 @@ class _SearchAndFilterTodoState extends State<SearchAndFilterTodo> {
     final currentFilter = context.watch<TodoFilterCubit>().state.filter;
     return currentFilter == filter ? Colors.blue : Colors.grey;
   }
-
 }
