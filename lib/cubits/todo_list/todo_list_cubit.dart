@@ -32,6 +32,7 @@ class TodoListCubit extends Cubit<TodoListState> {
       return todo;
     }).toList();
     emit(state.copyWith(todos: newTodos));
+    print(state);
   }
 
   void removeTodo(Todo todo){
